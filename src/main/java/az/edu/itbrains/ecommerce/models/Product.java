@@ -30,4 +30,9 @@ public class Product {
     private List<Photo> photos=new ArrayList<>();
     @OneToMany(mappedBy = "product")
     private List<Review> reviews=new ArrayList<>();
+
+
+
+
+
 }

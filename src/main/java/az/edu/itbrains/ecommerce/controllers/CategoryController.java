@@ -53,4 +53,5 @@ public class CategoryController {
         ApiResponse response = categoryService.remove(id);
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
+
 }

@@ -25,6 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final ModelMapper modelMapper;
     @Override
     public List<CategoryHomeDto> getHomeCategories() {
+
         List<Category> findCategory=categoryRepository.findByDeletedFalse();
         List<CategoryHomeDto> categories=findCategory.stream().map(category -> modelMapper.map(category,CategoryHomeDto.class)).collect(Collectors.toList());
         return categories;
@@ -41,8 +42,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryUpdateDto getUpdate(Long id) {
        Category findCategory=categoryRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Category","id",id));
-       
-        return null;
+       CategoryUpdateDto categoryUpdateDto=modelMapper.map(findCategory,CategoryUpdateDto.class);
+        return categoryUpdateDto;
     }
 
     @Override
@@ -53,7 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
             findCategory.setPhotoUrl(categoryUpdateDto.getPhotoUrl());
             findCategory.setNavbar(categoryUpdateDto.isNavbar());
             findCategory.setDeleted(categoryUpdateDto.isDeleted());
-
+            categoryRepository.save(findCategory);
         return new ApiResponse("Category updated successfully",true, HttpStatus.OK);
     }catch (Exception e){
             return new ApiResponse(e.getMessage(),false,HttpStatus.BAD_REQUEST);
@@ -83,7 +84,7 @@ public class CategoryServiceImpl implements CategoryService {
             category.setNavbar(categoryCreateDto.isNavbar());
             category.setDeleted(false);
             categoryRepository.save(category);
-            return new ApiResponse("Category updated successfully", true, HttpStatus.OK);
+            return new ApiResponse("Category created successfully", true, HttpStatus.CREATED);
         }
         catch (Exception e){
             return new ApiResponse(e.getMessage(),false, HttpStatus.BAD_REQUEST);

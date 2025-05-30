@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,7 +26,7 @@ public class User implements UserDetails {
     private String password;
 
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "user")
     private List<Review> reviews=new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
